@@ -156,14 +156,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD8D423A22B6A95E00C729D9 /* JoyConR.swift in Sources */,
-				DD8D52BE22BF5B9900C729D9 /* ProController.swift in Sources */,
-				DD8D414B22B616E800C729D9 /* JoyConL.swift in Sources */,
-				DD8D52C222BF7B9600C729D9 /* Utils.swift in Sources */,
-				DDA27BEC22C616C700AFB876 /* Subcommand.swift in Sources */,
 				DD8D52C022BF796000C729D9 /* JoyCon.swift in Sources */,
 				DD8D414C22B616E800C729D9 /* JoyConManager.swift in Sources */,
 				DD8D414A22B616E800C729D9 /* Controller.swift in Sources */,
+				DDA27BEC22C616C700AFB876 /* Subcommand.swift in Sources */,
+				DD8D414B22B616E800C729D9 /* JoyConL.swift in Sources */,
+				DD8D423A22B6A95E00C729D9 /* JoyConR.swift in Sources */,
+				DD8D52BE22BF5B9900C729D9 /* ProController.swift in Sources */,
+				DD8D52C222BF7B9600C729D9 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
