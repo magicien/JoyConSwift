@@ -9,6 +9,18 @@
 import Foundation
 import SceneKit
 
+let stickDirections: [JoyCon.StickDirection] = [
+    .Down,
+    .DownLeft,
+    .Left,
+    .UpLeft,
+    .Up,
+    .UpRight,
+    .Right,
+    .DownRight,
+    .Down
+]
+
 public class Controller {
     struct StickCalibration {
         var minXDiff: CGFloat
@@ -112,8 +124,8 @@ public class Controller {
     
     public var buttonPressHandler: ((JoyCon.Button) -> Void)?
     public var buttonReleaseHandler: ((JoyCon.Button) -> Void)?
-    public var leftStickHandler: ((JoyCon.StickDirection) -> Void)?
-    public var rightStickHandler: ((JoyCon.StickDirection) -> Void)?
+    public var leftStickHandler: ((JoyCon.StickDirection, JoyCon.StickDirection) -> Void)?
+    public var rightStickHandler: ((JoyCon.StickDirection, JoyCon.StickDirection) -> Void)?
     public var leftStickPosHandler: ((_ pos: CGPoint) -> Void)?
     public var rightStickPosHandler: ((_ pos: CGPoint) -> Void)?
     public var sensorHandler: (() -> Void)?
@@ -302,15 +314,17 @@ public class Controller {
     
     func setLeftStickDirection(direction: JoyCon.StickDirection) {
         if self.leftStickDirection != direction {
+            let oldDirection = self.leftStickDirection
             self.leftStickDirection = direction
-            self.leftStickHandler?(direction)
+            self.leftStickHandler?(direction, oldDirection)
         }
     }
 
     func setRightStickDirection(direction: JoyCon.StickDirection) {
         if self.rightStickDirection != direction {
+            let oldDirection = self.leftStickDirection
             self.rightStickDirection = direction
-            self.rightStickHandler?(direction)
+            self.rightStickHandler?(direction, oldDirection)
         }
     }
 
@@ -705,6 +719,14 @@ public class Controller {
             self.lStickPos.y = self.lStickRawPos.y
         }
         
+        if length < 0.25 {
+            self.setLeftStickDirection(direction: .Neutral)
+        } else {
+            let angle = Double(atan2(self.lStickPos.x, self.lStickPos.y))
+            let direction = Int(floor(4.0 * angle * M_1_PI + 4.5))
+            self.setLeftStickDirection(direction: stickDirections[direction])
+        }
+        
         self.leftStickPosHandler?(self.lStickPos)
     }
     
@@ -745,6 +767,14 @@ public class Controller {
             // TODO: Use rangeRatio
             self.rStickPos.x = self.rStickRawPos.x
             self.rStickPos.y = self.rStickRawPos.y
+        }
+        
+        if length < 0.25 {
+            self.setRightStickDirection(direction: .Neutral)
+        } else {
+            let angle = Double(atan2(self.rStickPos.x, self.rStickPos.y))
+            let direction = Int(floor(4.0 * angle * M_1_PI + 4.5))
+            self.setRightStickDirection(direction: stickDirections[direction])
         }
         
         self.rightStickPosHandler?(self.rStickPos)

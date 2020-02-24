@@ -88,8 +88,8 @@ public class ProController: Controller {
         let zr = button1 & 0x80 == 0x80
         let minus = button2 & 0x01 == 0x01
         let plus = button2 & 0x02 == 0x02
-        let lStick = button2 & 0x04 == 0x04
-        let rStick = button2 & 0x08 == 0x08
+        let rStick = button2 & 0x04 == 0x04
+        let lStick = button2 & 0x08 == 0x08
         let home = button2 & 0x10 == 0x10
         let capture = button2 & 0x20 == 0x20
         let down = button3 & 0x01 == 0x01
