@@ -65,9 +65,9 @@ public class JoyConManager {
         guard let controller = _controller else { return }
         self.controllers[device] = controller
         controller.isConnected = true
-        controller.readInitializeData()
-        
-        self.connectHandler?(controller)
+        controller.readInitializeData { [weak self] in
+            self?.connectHandler?(controller)
+        }
     }
     
     func handleInput(result: IOReturn, sender: UnsafeMutableRawPointer?, value: IOHIDValue) {

@@ -106,8 +106,20 @@ public class Controller {
     }
     
     public internal(set) var isConnected: Bool
-    public internal(set) var battery: JoyCon.BatteryStatus
-    public internal(set) var isCharging: Bool
+    public internal(set) var battery: JoyCon.BatteryStatus {
+        didSet {
+            if self.battery != oldValue {
+                self.batteryChangeHandler?(self.battery, oldValue)
+            }
+        }
+    }
+    public internal(set) var isCharging: Bool {
+        didSet {
+            if self.isCharging != oldValue {
+                self.isChargingChangeHandler?(self.isCharging)
+            }
+        }
+    }
     public internal(set) var buttonState: [JoyCon.Button: Bool]
     public internal(set) var leftStickDirection: JoyCon.StickDirection
     public internal(set) var rightStickDirection: JoyCon.StickDirection
@@ -129,6 +141,8 @@ public class Controller {
     public var leftStickPosHandler: ((_ pos: CGPoint) -> Void)?
     public var rightStickPosHandler: ((_ pos: CGPoint) -> Void)?
     public var sensorHandler: (() -> Void)?
+    public var batteryChangeHandler: ((JoyCon.BatteryStatus, JoyCon.BatteryStatus) -> Void)?
+    public var isChargingChangeHandler: ((Bool) -> Void)?
     
     public init(device: IOHIDDevice) {
         self.device = device
@@ -153,9 +167,12 @@ public class Controller {
         self.buttonColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
     }
     
-    func readInitializeData() {
-        self.readControllerColor()
-        self.readCalibration()
+    func readInitializeData(_ done: @escaping () -> Void) {
+        self.readControllerColor {
+            self.readCalibration()
+            // TODO: Call done() after readCalibration() is done
+            done()
+        }
     }
     
     func handleError(result: Int32, value: IOHIDValue) {}
@@ -780,21 +797,23 @@ public class Controller {
         self.rightStickPosHandler?(self.rStickPos)
     }
     
-    public func readControllerColor() {
+    public func readControllerColor(done: (() -> Void)?) {
         self.readSPIFlash(address: 0x601B, length: 0x01) { [weak self] data in
-            if data[0] == 1 {
-                self?.readControllerColorData()
-            } else {
+            if data[0] == 0 {
                 // Default color
                 self?.bodyColor = CGColor(red: 0.333, green: 0.333, blue: 0.333, alpha: 0.333)
                 self?.buttonColor = CGColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                done?()
+            } else {
+                self?.readControllerColorData(done: done)
             }
         }
     }
     
-    func readControllerColorData() {
+    func readControllerColorData(done: (() -> Void)?) {
         self.readSPIFlash(address: 0x6050, length: 12) { [weak self] data in
             self?.setControllerColorData(data)
+            done?()
         }
     }
     
