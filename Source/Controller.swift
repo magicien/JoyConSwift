@@ -113,6 +113,7 @@ public class Controller {
             }
         }
     }
+    private var emptyCount: Int = 0
     public internal(set) var isCharging: Bool {
         didSet {
             if self.isCharging != oldValue {
@@ -241,6 +242,17 @@ public class Controller {
         let ptr = IOHIDValueGetBytePtr(value)
         let data = (ptr+1).pointee
         
+        if ((data & 0xE0) == 0x00) {
+            // TODO: Check other values if the battery data is reliable
+            self.emptyCount += 1
+            if self.emptyCount > 100 {
+                self.battery = .empty
+            }
+            return
+        } else {
+            self.emptyCount = 0
+        }
+
         self.isCharging = data & 0x10 == 0x10
         
         switch (data & 0xE0) {
