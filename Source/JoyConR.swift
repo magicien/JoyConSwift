@@ -66,29 +66,32 @@ public class JoyConR: Controller {
         let button1 = (ptr+2).pointee
         let button2 = (ptr+3).pointee
 
-        let plus = button1 & 0x02 == 0x02
-        let home = button1 & 0x10 == 0x10
-        let stick = button1 & 0x04 == 0x04
-        let y = button2 & 0x01 == 0x01
-        let x = button2 & 0x02 == 0x02
-        let b = button2 & 0x04 == 0x04
-        let a = button2 & 0x08 == 0x08
-        let sr = button2 & 0x10 == 0x10
-        let sl = button2 & 0x20 == 0x20
-        let r = button2 & 0x40 == 0x40
-        let zr = button2 & 0x80 == 0x80
-        
-        self.buttonState[.Plus] = plus
-        self.buttonState[.Home] = home
-        self.buttonState[.RStick] = stick
-        self.buttonState[.Y] = y
-        self.buttonState[.X] = x
-        self.buttonState[.B] = b
-        self.buttonState[.A] = a
-        self.buttonState[.RightSR] = sr
-        self.buttonState[.RightSL] = sl
-        self.buttonState[.R] = r
-        self.buttonState[.ZR] = zr
+        let y = button1 & 0x01 == 0x01
+        let x = button1 & 0x02 == 0x02
+        let b = button1 & 0x04 == 0x04
+        let a = button1 & 0x08 == 0x08
+        let sr = button1 & 0x10 == 0x10
+        let sl = button1 & 0x20 == 0x20
+        let r = button1 & 0x40 == 0x40
+        let zr = button1 & 0x80 == 0x80
+        let plus = button2 & 0x02 == 0x02
+        let stick = button2 & 0x04 == 0x04
+        let home = button2 & 0x10 == 0x10
+
+        let newState: [JoyCon.Button: Bool] = [
+            .Y: y,
+            .X: x,
+            .B: b,
+            .A: a,
+            .RightSR: sr,
+            .RightSL: sl,
+            .R: r,
+            .ZR: zr,
+            .Plus: plus,
+            .Home: home,
+            .RStick: stick
+        ]
+        self.setButtonState(state: newState)
         
         self.readRStickData(value: value)
     }
