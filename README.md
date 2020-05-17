@@ -45,6 +45,14 @@ manager.disconnectHandler = { controller in
 manager.runAsync()
 ```
 
+## Documentation
+
+See [JoyConSwift Documentation](https://magicien.github.io/JoyConSwift/)
+
+## Thanks to
+
+[dekuNukem/Nintendo_Switch_Reverse_Engineering](https://github.com/dekuNukem/Nintendo_Switch_Reverse_Engineering) - A look at inner workings of Joycon and Nintendo Switch
+
 ## See also
 
 [JoyKeyMapper](https://github.com/magicien/JoyKeyMapper) - Nintendo Joy-Con/ProController Key mapper for macOS
