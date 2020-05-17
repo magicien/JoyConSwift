@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Bluetooth HID subcommands
 class Subcommand {
     enum CommandType: UInt8 {
         case getControllerState = 0x00

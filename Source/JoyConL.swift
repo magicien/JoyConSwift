@@ -9,6 +9,7 @@
 import IOKit
 import IOKit.hid
 
+/// Joy-Con (L) class
 public class JoyConL: Controller {
     static let buttonMap: [UInt32: JoyCon.Button] = [
         1: .Left,

@@ -8,7 +8,10 @@
 
 import Foundation
 
+/// enum values for JoyCon
 public enum JoyCon {
+    
+    /// Controller types
     public enum ControllerType: String {
         case JoyConL = "Joy-Con (L)"
         case JoyConR = "Joy-Con (R)"
@@ -16,6 +19,7 @@ public enum JoyCon {
         case unknown = "unknown"
     }
     
+    /// Types of the output report
     public enum OutputType: UInt8 {
         case subcommand = 0x01
         case firmwareUpdate = 0x03
@@ -23,6 +27,7 @@ public enum JoyCon {
         case nfcIR = 0x11
     }
     
+    /// HCI states which are used for a "Set HCI state" subcommand
     public enum HCIState: UInt8 {
         case disconnect = 0x00
         case rebootAndReconnect = 0x01
@@ -30,6 +35,7 @@ public enum JoyCon {
         case rebootAndReconnectHome = 0x04
     }
     
+    /// Input report modes
     public enum InputMode: UInt8 {
         case pollingNFCIR = 0x00
         case pollingNFCIRConfig = 0x01
@@ -39,13 +45,15 @@ public enum JoyCon {
         case nfcIR = 0x31
         case simple = 0x3F
     }
-    
+        
+    /// Player light patterns
     public enum PlayerLightPattern {
         case on
         case off
         case flash
     }
     
+    /// Battery status
     public enum BatteryStatus: UInt8 {
         case full
         case medium
@@ -54,7 +62,8 @@ public enum JoyCon {
         case empty
         case unknown
     }
-    
+        
+    /// Buttons
     public enum Button {
         // JoyCon (L)
         case Minus
@@ -64,7 +73,9 @@ public enum JoyCon {
         case Up
         case Right
         case Left
+        /// SR button of Joy-Con (L)
         case LeftSR
+        /// SL button of Joy-Con (L)
         case LeftSL
         case L
         case ZL
@@ -77,12 +88,15 @@ public enum JoyCon {
         case Y
         case B
         case A
+        /// SR button of Joy-Con (R)
         case RightSR
+        /// SL button of Joy-Con (R)
         case RightSL
         case R
         case ZR
     }
     
+    /// Stick directions
     public enum StickDirection {
         case Up
         case UpRight

@@ -9,6 +9,7 @@
 import IOKit
 import IOKit.hid
 
+/// Pro Controller class
 public class ProController: Controller {
     static let buttonMap: [UInt32: JoyCon.Button] = [
         1: .B,

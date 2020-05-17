@@ -21,7 +21,9 @@ let stickDirections: [JoyCon.StickDirection] = [
     .Down
 ]
 
+/// Generic class for Joy-Con and Pro Controller
 public class Controller {
+    /// Stick calibration data structure
     struct StickCalibration {
         var minXDiff: CGFloat
         var midX: CGFloat
@@ -32,7 +34,8 @@ public class Controller {
         var deadZone: CGFloat
         var rangeRatio: CGFloat
     }
-    
+
+    /// Acceleration sensor calibration data structure
     struct AccSensorCalibration {
         var xOrigin: CGFloat
         var yOrigin: CGFloat
@@ -48,6 +51,7 @@ public class Controller {
         var zOffset: CGFloat
     }
     
+    /// Gyro sensor calibration data structure
     struct GyroSensorCalibration {
         var xSensitivity: CGFloat
         var ySensitivity: CGFloat
@@ -61,6 +65,7 @@ public class Controller {
     }
     
     let device: IOHIDDevice
+    /// Serial ID of the controller
     public let serialID: String
     var handlers: [UInt8: (IOHIDValue) -> Void]
     var spiReadHandler: [UInt32: ([UInt8]) -> Void]
@@ -101,11 +106,14 @@ public class Controller {
         }
     }
 
+    /// Controller type
     public var type: JoyCon.ControllerType {
         return .unknown
     }
-    
+
+    /// true if the controller is connected to this mac
     public internal(set) var isConnected: Bool
+    /// Battery status
     public internal(set) var battery: JoyCon.BatteryStatus {
         didSet {
             if self.battery != oldValue {
@@ -114,6 +122,7 @@ public class Controller {
         }
     }
     private var emptyCount: Int = 0
+    /// true if the controller is being charged
     public internal(set) var isCharging: Bool {
         didSet {
             if self.isCharging != oldValue {
@@ -144,7 +153,9 @@ public class Controller {
     public var sensorHandler: (() -> Void)?
     public var batteryChangeHandler: ((JoyCon.BatteryStatus, JoyCon.BatteryStatus) -> Void)?
     public var isChargingChangeHandler: ((Bool) -> Void)?
-    
+        
+    /// Initialize the controller
+    /// - Parameter device: IOHIDDevice data of the controller
     public init(device: IOHIDDevice) {
         self.device = device
         self.serialID = IOHIDDeviceGetProperty(device, kIOHIDSerialNumberKey as CFString) as? String ?? ""
@@ -419,13 +430,21 @@ public class Controller {
         self.reportOutput(type: .subcommand, data: cmd.data)
     }
     
+    // MARK: - Subcommands
+    
+    /// Set HCI state (disconnect/page/pair/turn off)
+    ///
+    /// It causes the controller to change power state.
+    /// - Parameter state: Controller power state
     public func setHCIState(state: JoyCon.HCIState) {
         guard self.isConnected else { return }
         
         let data: UInt8 = state.rawValue
         self.sendSubcommand(type: .setHCIState, data: [data])
     }
-        
+    
+    /// Enable/Disable IMU (6-Axis sensor)
+    /// - Parameter enable: New IMU state
     public func enableIMU(enable: Bool) {
         guard self.isConnected else { return }
 
@@ -433,6 +452,8 @@ public class Controller {
         self.sendSubcommand(type: .enableIMU, data: [data])
     }
     
+    /// Set input report mode
+    /// - Parameter mode: Input report mode
     public func setInputMode(mode: JoyCon.InputMode) {
         guard self.isConnected else { return }
         
@@ -440,6 +461,12 @@ public class Controller {
         self.sendSubcommand(type: .setInputMode, data: [data])
     }
     
+    /// Set player lights (on/off/flash)
+    /// - Parameters:
+    ///   - l1: Light 1
+    ///   - l2: Light 2
+    ///   - l3: Light 3
+    ///   - l4: Light 4
     public func setPlayerLights(
         l1: JoyCon.PlayerLightPattern,
         l2: JoyCon.PlayerLightPattern,
@@ -461,6 +488,11 @@ public class Controller {
         self.sendSubcommand(type: .setPlayerLights, data: [data])
     }
     
+    /// Read the SPI flash data
+    /// - Parameters:
+    ///   - address: First address of the data
+    ///   - length: Data length
+    ///   - handler: A function to handle the received data
     public func readSPIFlash(address: UInt32, length: UInt8, handler: @escaping ([UInt8]) -> Void) {
         let data: [UInt8] = [
             UInt8(address & 0xFF),
@@ -809,6 +841,8 @@ public class Controller {
         self.rightStickPosHandler?(self.rStickPos)
     }
     
+    /// Read the controller collor data
+    /// - Parameter done: Called after the color data is set. To get the colors, read `bodyColor` and `buttonColor`.
     public func readControllerColor(done: (() -> Void)?) {
         self.readSPIFlash(address: 0x601B, length: 0x01) { [weak self] data in
             if data[0] == 0 {

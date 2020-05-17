@@ -10,6 +10,7 @@ import Foundation
 import IOKit
 import IOKit.hid
 
+/// The manager class to handle controller connection/disconnection events
 public class JoyConManager {
     static let vendorID: Int32 = 0x057E
     static let joyConLID: Int32 = 0x2006 // Joy-Con (L)
@@ -19,10 +20,13 @@ public class JoyConManager {
     private let manager: IOHIDManager = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone))
     private var controllers: [IOHIDDevice: Controller] = [:]
     private var runLoop: RunLoop? = nil
-    
+        
+    /// Handler for a controller connection event
     public var connectHandler: ((_ controller: Controller) -> Void)? = nil
+    /// Handler for a controller disconnection event
     public var disconnectHandler: ((_ controller: Controller) -> Void)? = nil
     
+    /// Initialize a manager
     public init() {}
     
     let handleMatchCallback: IOHIDDeviceCallback = { (context, result, sender, device) in
@@ -110,7 +114,10 @@ public class JoyConManager {
         }
         self.controllers.removeAll()
     }
-    
+        
+    /// Start waiting for controller connection/disconnection events in the current thread.
+    /// If you don't want to stop the current thread, use `runAsync()` instead.
+    /// - Returns: kIOReturnSuccess if succeeded. IOReturn error value if failed.
     public func run() -> IOReturn {
         let joyConLCriteria: [String: Any] = [
             kIOHIDDeviceUsagePageKey: kHIDPage_GenericDesktop,
@@ -153,6 +160,9 @@ public class JoyConManager {
         return kIOReturnSuccess
     }
     
+    /// Start waiting for controller connection/disconnection events in a new thread.
+    /// If you want to wait for the events synchronously, use `run()` instead.
+    /// - Returns: kIOReturnSuccess if succeeded. IOReturn error value if failed.
     public func runAsync() -> IOReturn {
         DispatchQueue.global().async { [weak self] in
             _ = self?.run()
@@ -160,6 +170,7 @@ public class JoyConManager {
         return kIOReturnSuccess
     }
     
+    /// Stop waiting for controller connection/disconnection events
     public func stop() {
         if let currentLoop = self.runLoop?.getCFRunLoop() {
             CFRunLoopStop(currentLoop)
