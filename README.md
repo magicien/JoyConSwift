@@ -11,6 +11,12 @@ Add the following to your [Podfile](http://guides.cocoapods.org/using/the-podfil
 pod 'JoyConSwift'
 ```
 
+## Set USB Capability
+
+To use controllers, you need to check `Signing & Capabilities` > `App SandBox` > `USB` in your Xcode project.
+
+<img width="367" alt="usb_capability" src="https://user-images.githubusercontent.com/1047810/82137704-5f7ea980-9855-11ea-8f21-0e6c2ad518e9.png">
+
 ## Usage
 
 ```swift
