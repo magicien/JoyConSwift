@@ -70,6 +70,7 @@ public class Controller {
     var handlers: [UInt8: (IOHIDValue) -> Void]
     var spiReadHandler: [UInt32: ([UInt8]) -> Void]
     private var packetCounter: UInt8
+    private var rumbleData: [UInt8]
     
     private var subcommandQueue: [Subcommand]
     private var processingSubcommand: Subcommand?
@@ -110,7 +111,7 @@ public class Controller {
     public var type: JoyCon.ControllerType {
         return .unknown
     }
-
+    
     /// true if the controller is connected to this mac
     public internal(set) var isConnected: Bool
     /// Battery status
@@ -153,7 +154,7 @@ public class Controller {
     public var sensorHandler: (() -> Void)?
     public var batteryChangeHandler: ((JoyCon.BatteryStatus, JoyCon.BatteryStatus) -> Void)?
     public var isChargingChangeHandler: ((Bool) -> Void)?
-        
+    
     /// Initialize the controller
     /// - Parameter device: IOHIDDevice data of the controller
     public init(device: IOHIDDevice) {
@@ -163,6 +164,7 @@ public class Controller {
         self.spiReadHandler = [:]
         self.isConnected = false
         self.packetCounter = 0
+        self.rumbleData = [0x00, 0x01, 0x00, 0x40, 0x00, 0x01, 0x00, 0x40]
         self.subcommandQueue = []
         self.battery = .unknown
         self.isCharging = false
@@ -368,19 +370,53 @@ public class Controller {
         }
     }
 
-    func createRumbleData() -> [UInt8] {
-        // TODO: Set given frequency
+    // TODO: Support other rumble patterns (resonance, click pulse)
+    func setRumbleData(left: Bool, lowFreq: Rumble.LowFrequency, lowAmp: UInt8, highFreq: Rumble.HighFrequency, highAmp: UInt8) {
+        self.setRumbleData(left: left, lowFreq: lowFreq.rawValue, lowAmp: lowAmp, highFreq: highFreq.rawValue, highAmp: highAmp)
+    }
+    
+    func setRumbleData(left: Bool, lowFreq: UInt8, lowAmp: UInt8, highFreq: UInt8, highAmp: UInt8) {
+        let lamp: UInt8 = min(lowAmp, 100)
+        let hamp: UInt8 = min(highAmp, 100)
         
-        // 00 01 40 40 => 320Hz - 160Hz
-        // 4bytes for Left Joy-Con, 4bytes for Right Joy-Con
-        return [0x00, 0x01, 0x40, 0x40, 0x00, 0x01, 0x40, 0x40]
+        let b1 = (highFreq & 0x7f) << 2
+        let b2 = (hamp << 1) | (highFreq >> 6 & 0x01)
+        let b3 = (lowFreq & 0x7f) | (lamp << 7)
+        let b4 = 0x40 | ((lamp >> 1) & 0x3f)
+
+        if left {
+            self.rumbleData[0] = b1
+            self.rumbleData[1] = b2
+            self.rumbleData[2] = b3
+            self.rumbleData[3] = b4
+        } else {
+            self.rumbleData[4] = b1
+            self.rumbleData[5] = b2
+            self.rumbleData[6] = b3
+            self.rumbleData[7] = b4
+        }
+    }
+    
+    public func sendRumbleData(
+        leftLowFreq: Rumble.LowFrequency,
+        leftLowAmp: UInt8,
+        leftHighFreq: Rumble.HighFrequency,
+        leftHighAmp: UInt8,
+        rightLowFreq: Rumble.LowFrequency,
+        rightLowAmp: UInt8,
+        rightHighFreq: Rumble.HighFrequency,
+        rightHighAmp: UInt8
+    ) {
+        self.setRumbleData(left: true, lowFreq: leftLowFreq, lowAmp: leftLowAmp, highFreq: leftHighFreq, highAmp: leftHighAmp)
+        self.setRumbleData(left: false, lowFreq: rightLowFreq, lowAmp: rightLowAmp, highFreq: rightHighFreq, highAmp: rightHighAmp)
+        
+        self.reportOutput(type: .rumble, data: self.rumbleData)
     }
     
     func sendSubcommand(type: Subcommand.CommandType, data: [UInt8], responseHandler: @escaping (_ value: IOHIDValue?) -> Void) {
         guard self.isConnected else { return }
 
-        let rumbleData = self.createRumbleData()
-        let sendData = rumbleData + [type.rawValue] + data
+        let sendData = self.rumbleData + [type.rawValue] + data
         let command = Subcommand(type: type, data: sendData, responseHandler: responseHandler)
         
         self.subcommandQueue.append(command)
@@ -442,7 +478,7 @@ public class Controller {
         let data: UInt8 = state.rawValue
         self.sendSubcommand(type: .setHCIState, data: [data])
     }
-    
+        
     /// Enable/Disable IMU (6-Axis sensor)
     /// - Parameter enable: New IMU state
     public func enableIMU(enable: Bool) {
@@ -486,6 +522,13 @@ public class Controller {
         let data: UInt8 = bit0 | bit1 | bit2 | bit3 | bit4 | bit5 | bit6 | bit7
         
         self.sendSubcommand(type: .setPlayerLights, data: [data])
+    }
+    
+    /// Enable vibration
+    /// - Parameter enable: if true, vibration will be enabled
+    public func enableVibration(enable: Bool) {
+        let data: [UInt8] = [enable ? 1 : 0]
+        self.sendSubcommand(type: .enableVibration, data: data)
     }
     
     /// Read the SPI flash data

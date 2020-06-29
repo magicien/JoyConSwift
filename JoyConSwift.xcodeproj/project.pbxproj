@@ -16,6 +16,7 @@
 		DD8D52C022BF796000C729D9 /* JoyCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D52BF22BF796000C729D9 /* JoyCon.swift */; };
 		DD8D52C222BF7B9600C729D9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D52C122BF7B9600C729D9 /* Utils.swift */; };
 		DDA27BEC22C616C700AFB876 /* Subcommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA27BEB22C616C700AFB876 /* Subcommand.swift */; };
+		DDEADDA524A9CEBC00A61D12 /* Rumble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEADDA424A9CEBC00A61D12 /* Rumble.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		DD8D52BF22BF796000C729D9 /* JoyCon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoyCon.swift; sourceTree = "<group>"; };
 		DD8D52C122BF7B9600C729D9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DDA27BEB22C616C700AFB876 /* Subcommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subcommand.swift; sourceTree = "<group>"; };
+		DDEADDA424A9CEBC00A61D12 /* Rumble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rumble.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				DD8D52BF22BF796000C729D9 /* JoyCon.swift */,
 				DD8D414922B616E800C729D9 /* JoyConManager.swift */,
 				DD8D414722B616E800C729D9 /* Controller.swift */,
+				DDEADDA424A9CEBC00A61D12 /* Rumble.swift */,
 				DDA27BEB22C616C700AFB876 /* Subcommand.swift */,
 				DD8D414822B616E800C729D9 /* JoyConL.swift */,
 				DD8D423922B6A95E00C729D9 /* JoyConR.swift */,
@@ -157,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD8D52C022BF796000C729D9 /* JoyCon.swift in Sources */,
+				DDEADDA524A9CEBC00A61D12 /* Rumble.swift in Sources */,
 				DD8D414C22B616E800C729D9 /* JoyConManager.swift in Sources */,
 				DD8D414A22B616E800C729D9 /* Controller.swift in Sources */,
 				DDA27BEC22C616C700AFB876 /* Subcommand.swift in Sources */,
