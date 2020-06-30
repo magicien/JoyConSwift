@@ -730,105 +730,111 @@ public class Controller {
     func readSensorCalibration() {
         // Factory calibration
         self.readSPIFlash(address: 0x6020, length: 0x18) { [weak self] data in
-            let ptr = UnsafePointer<UInt8>(data)
-            
-            let accXOrigin = CGFloat(ReadInt16(from: ptr))
-            let accYOrigin = CGFloat(ReadInt16(from: ptr+2))
-            let accZOrigin = CGFloat(ReadInt16(from: ptr+4))
-            let accXSensitivity = CGFloat(ReadInt16(from: ptr+6))
-            let accYSensitivity = CGFloat(ReadInt16(from: ptr+8))
-            let accZSensitivity = CGFloat(ReadInt16(from: ptr+10))
-            
-            let gyroXOffset = CGFloat(ReadInt16(from: ptr+12))
-            let gyroYOffset = CGFloat(ReadInt16(from: ptr+14))
-            let gyroZOffset = CGFloat(ReadInt16(from: ptr+16))
-            let gyroXSensitivity = CGFloat(ReadInt16(from: ptr+18))
-            let gyroYSensitivity = CGFloat(ReadInt16(from: ptr+20))
-            let gyroZSensitivity = CGFloat(ReadInt16(from: ptr+22))
+            data.withUnsafeBufferPointer {
+                guard let ptr = $0.baseAddress else { return }
+                
+                let accXOrigin = CGFloat(ReadInt16(from: ptr))
+                let accYOrigin = CGFloat(ReadInt16(from: ptr+2))
+                let accZOrigin = CGFloat(ReadInt16(from: ptr+4))
+                let accXSensitivity = CGFloat(ReadInt16(from: ptr+6))
+                let accYSensitivity = CGFloat(ReadInt16(from: ptr+8))
+                let accZSensitivity = CGFloat(ReadInt16(from: ptr+10))
+                
+                let gyroXOffset = CGFloat(ReadInt16(from: ptr+12))
+                let gyroYOffset = CGFloat(ReadInt16(from: ptr+14))
+                let gyroZOffset = CGFloat(ReadInt16(from: ptr+16))
+                let gyroXSensitivity = CGFloat(ReadInt16(from: ptr+18))
+                let gyroYSensitivity = CGFloat(ReadInt16(from: ptr+20))
+                let gyroZSensitivity = CGFloat(ReadInt16(from: ptr+22))
 
-            self?.accFactoryCalibration = AccSensorCalibration(
-                xOrigin: accXOrigin,
-                yOrigin: accYOrigin,
-                zOrigin: accZOrigin,
-                xSensitivity: accXSensitivity,
-                ySensitivity: accYSensitivity,
-                zSensitivity: accZSensitivity,
-                xCoeff: 4.0 / (accXSensitivity - accXOrigin),
-                yCoeff: 4.0 / (accYSensitivity - accYOrigin),
-                zCoeff: 4.0 / (accZSensitivity - accZOrigin),
-                xOffset: 0,
-                yOffset: 0,
-                zOffset: 0
-            )
-            self?.gyroFactoryCalibration = GyroSensorCalibration(
-                xSensitivity: gyroXSensitivity,
-                ySensitivity: gyroYSensitivity,
-                zSensitivity: gyroZSensitivity,
-                xCoeff: 936.0 / (gyroXSensitivity - gyroXOffset),
-                yCoeff: 936.0 / (gyroYSensitivity - gyroYOffset),
-                zCoeff: 936.0 / (gyroZSensitivity - gyroZOffset),
-                xOffset: gyroXOffset,
-                yOffset: gyroYOffset,
-                zOffset: gyroZOffset
-            )
+                self?.accFactoryCalibration = AccSensorCalibration(
+                    xOrigin: accXOrigin,
+                    yOrigin: accYOrigin,
+                    zOrigin: accZOrigin,
+                    xSensitivity: accXSensitivity,
+                    ySensitivity: accYSensitivity,
+                    zSensitivity: accZSensitivity,
+                    xCoeff: 4.0 / (accXSensitivity - accXOrigin),
+                    yCoeff: 4.0 / (accYSensitivity - accYOrigin),
+                    zCoeff: 4.0 / (accZSensitivity - accZOrigin),
+                    xOffset: 0,
+                    yOffset: 0,
+                    zOffset: 0
+                )
+                self?.gyroFactoryCalibration = GyroSensorCalibration(
+                    xSensitivity: gyroXSensitivity,
+                    ySensitivity: gyroYSensitivity,
+                    zSensitivity: gyroZSensitivity,
+                    xCoeff: 936.0 / (gyroXSensitivity - gyroXOffset),
+                    yCoeff: 936.0 / (gyroYSensitivity - gyroYOffset),
+                    zCoeff: 936.0 / (gyroZSensitivity - gyroZOffset),
+                    xOffset: gyroXOffset,
+                    yOffset: gyroYOffset,
+                    zOffset: gyroZOffset
+                )
+            }
         }
         self.readSPIFlash(address: 0x6080, length: 0x06) { [weak self] data in
-            let ptr = UnsafePointer<UInt8>(data)
-            
-            self?.accFactoryCalibration?.xOffset = CGFloat(ReadInt16(from: ptr))
-            self?.accFactoryCalibration?.yOffset = CGFloat(ReadInt16(from: ptr+2))
-            self?.accFactoryCalibration?.zOffset = CGFloat(ReadInt16(from: ptr+4))
+            data.withUnsafeBufferPointer {
+                guard let ptr = $0.baseAddress else { return }
+                self?.accFactoryCalibration?.xOffset = CGFloat(ReadInt16(from: ptr))
+                self?.accFactoryCalibration?.yOffset = CGFloat(ReadInt16(from: ptr+2))
+                self?.accFactoryCalibration?.zOffset = CGFloat(ReadInt16(from: ptr+4))
+            }
         }
         
         // User calibration
         self.readSPIFlash(address: 0x8026, length: 0x1A) { [weak self] data in
-            let ptr = UnsafePointer<UInt8>(data)
-            let magic = ReadUInt16(from: ptr)
+            data.withUnsafeBufferPointer {
+                guard let ptr = $0.baseAddress else { return }
 
-            if (magic != 0xA1B2) {
-                // No user calibration data
-                return
+                let magic = ReadUInt16(from: ptr)
+
+                if (magic != 0xA1B2) {
+                    // No user calibration data
+                    return
+                }
+                
+                let accXOrigin = CGFloat(ReadInt16(from: ptr+2))
+                let accYOrigin = CGFloat(ReadInt16(from: ptr+4))
+                let accZOrigin = CGFloat(ReadInt16(from: ptr+6))
+                let accXSensitivity = CGFloat(ReadInt16(from: ptr+8))
+                let accYSensitivity = CGFloat(ReadInt16(from: ptr+10))
+                let accZSensitivity = CGFloat(ReadInt16(from: ptr+12))
+                
+                let gyroXOffset = CGFloat(ReadInt16(from: ptr+14))
+                let gyroYOffset = CGFloat(ReadInt16(from: ptr+16))
+                let gyroZOffset = CGFloat(ReadInt16(from: ptr+18))
+                let gyroXSensitivity = CGFloat(ReadInt16(from: ptr+20))
+                let gyroYSensitivity = CGFloat(ReadInt16(from: ptr+22))
+                let gyroZSensitivity = CGFloat(ReadInt16(from: ptr+24))
+                
+                self?.accUserCalibration = AccSensorCalibration(
+                    xOrigin: accXOrigin,
+                    yOrigin: accYOrigin,
+                    zOrigin: accZOrigin,
+                    xSensitivity: accXSensitivity,
+                    ySensitivity: accYSensitivity,
+                    zSensitivity: accZSensitivity,
+                    xCoeff: 4.0 / (accXSensitivity - accXOrigin),
+                    yCoeff: 4.0 / (accYSensitivity - accYOrigin),
+                    zCoeff: 4.0 / (accZSensitivity - accZOrigin),
+                    xOffset: self?.accFactoryCalibration?.xOffset ?? 0,
+                    yOffset: self?.accFactoryCalibration?.yOffset ?? 0,
+                    zOffset: self?.accFactoryCalibration?.zOffset ?? 0
+                )
+                self?.gyroUserCalibration = GyroSensorCalibration(
+                    xSensitivity: gyroXSensitivity,
+                    ySensitivity: gyroYSensitivity,
+                    zSensitivity: gyroZSensitivity,
+                    xCoeff: 936.0 / (gyroXSensitivity - gyroXOffset),
+                    yCoeff: 936.0 / (gyroYSensitivity - gyroYOffset),
+                    zCoeff: 936.0 / (gyroZSensitivity - gyroZOffset),
+                    xOffset: gyroXOffset,
+                    yOffset: gyroYOffset,
+                    zOffset: gyroZOffset
+                )
             }
-            
-            let accXOrigin = CGFloat(ReadInt16(from: ptr+2))
-            let accYOrigin = CGFloat(ReadInt16(from: ptr+4))
-            let accZOrigin = CGFloat(ReadInt16(from: ptr+6))
-            let accXSensitivity = CGFloat(ReadInt16(from: ptr+8))
-            let accYSensitivity = CGFloat(ReadInt16(from: ptr+10))
-            let accZSensitivity = CGFloat(ReadInt16(from: ptr+12))
-            
-            let gyroXOffset = CGFloat(ReadInt16(from: ptr+14))
-            let gyroYOffset = CGFloat(ReadInt16(from: ptr+16))
-            let gyroZOffset = CGFloat(ReadInt16(from: ptr+18))
-            let gyroXSensitivity = CGFloat(ReadInt16(from: ptr+20))
-            let gyroYSensitivity = CGFloat(ReadInt16(from: ptr+22))
-            let gyroZSensitivity = CGFloat(ReadInt16(from: ptr+24))
-            
-            self?.accUserCalibration = AccSensorCalibration(
-                xOrigin: accXOrigin,
-                yOrigin: accYOrigin,
-                zOrigin: accZOrigin,
-                xSensitivity: accXSensitivity,
-                ySensitivity: accYSensitivity,
-                zSensitivity: accZSensitivity,
-                xCoeff: 4.0 / (accXSensitivity - accXOrigin),
-                yCoeff: 4.0 / (accYSensitivity - accYOrigin),
-                zCoeff: 4.0 / (accZSensitivity - accZOrigin),
-                xOffset: self?.accFactoryCalibration?.xOffset ?? 0,
-                yOffset: self?.accFactoryCalibration?.yOffset ?? 0,
-                zOffset: self?.accFactoryCalibration?.zOffset ?? 0
-            )
-            self?.gyroUserCalibration = GyroSensorCalibration(
-                xSensitivity: gyroXSensitivity,
-                ySensitivity: gyroYSensitivity,
-                zSensitivity: gyroZSensitivity,
-                xCoeff: 936.0 / (gyroXSensitivity - gyroXOffset),
-                yCoeff: 936.0 / (gyroYSensitivity - gyroYOffset),
-                zCoeff: 936.0 / (gyroZSensitivity - gyroZOffset),
-                xOffset: gyroXOffset,
-                yOffset: gyroYOffset,
-                zOffset: gyroZOffset
-            )
         }
     }
     
