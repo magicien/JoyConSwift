@@ -396,7 +396,17 @@ public class Controller {
             self.rumbleData[7] = b4
         }
     }
-    
+        
+    /// Send rumble data
+    /// - Parameters:
+    ///   - leftLowFreq: Low frequency of a left controller
+    ///   - leftLowAmp: Amplitude of low frequency of a left controller
+    ///   - leftHighFreq: High frequency of a left controller
+    ///   - leftHighAmp: Amplitude of high frequency of a left controller
+    ///   - rightLowFreq: Low frequency of a right controller
+    ///   - rightLowAmp: Amplitude of low frequency of a right controller
+    ///   - rightHighFreq: High frequency of a right controller
+    ///   - rightHighAmp: Amplitude of high frequency of a right controller
     public func sendRumbleData(
         leftLowFreq: Rumble.LowFrequency,
         leftLowAmp: UInt8,
@@ -522,6 +532,44 @@ public class Controller {
         let data: UInt8 = bit0 | bit1 | bit2 | bit3 | bit4 | bit5 | bit6 | bit7
         
         self.sendSubcommand(type: .setPlayerLights, data: [data])
+    }
+    
+    /// Set Home button LED of Joy-Con (R) or ProController
+    /// - Parameters:
+    ///   - miniCycleDuration: Global mini cycle duration. 0-15. 0: off, 1: 8ms, ... , 15: 175ms
+    ///   - numCycles: Number of full cycles. 0-15. 0: repeat forever.
+    ///   - startIntensity: Initial LED intensity
+    ///   - cycleData: Array of Home LED patterns. The maximum count of the array is 15.
+    public func setHomeLight(
+        miniCycleDuration: UInt8,
+        numCycles: UInt8,
+        startIntensity: UInt8,
+        cycleData: [HomeLEDPattern]
+    ) {
+        let numMiniCycles = UInt8(min(cycleData.count, 15))
+        let data0: UInt8 = (numMiniCycles << 4) | miniCycleDuration
+        let data1: UInt8 = (startIntensity << 4) | numCycles
+        var data: [UInt8] = [data0, data1]
+
+        let defaultPattern = HomeLEDPattern(intensity: 0, fadeDuration: 0, duration: 0)
+        let cycles = cycleData + [HomeLEDPattern](repeating: defaultPattern, count: 16 - cycleData.count)
+        for i in 0..<8 {
+            let cycle1 = cycles[i*2]
+            let cycle2 = cycles[i*2+1]
+            let intensity1: UInt8 = min(cycle1.intensity, 0x0F)
+            let fadingDuration1: UInt8 = min(cycle1.fadeDuration, 0x0F)
+            let duration1: UInt8 = min(cycle1.duration, 0x0F)
+            let intensity2: UInt8 = min(cycle2.intensity, 0x0F)
+            let fadingDuration2: UInt8 = min(cycle2.fadeDuration, 0x0F)
+            let duration2: UInt8 = min(cycle2.duration, 0x0F)
+            
+            data.append((intensity1 << 4) | intensity2)
+            data.append((fadingDuration1 << 4) | duration1)
+            data.append((fadingDuration2 << 4) | duration2)
+        }
+        _ = data.popLast()
+        
+        self.sendSubcommand(type: .setHomeLight, data: data)
     }
     
     /// Enable vibration
