@@ -364,7 +364,7 @@ public class Controller {
 
     func setRightStickDirection(direction: JoyCon.StickDirection) {
         if self.rightStickDirection != direction {
-            let oldDirection = self.leftStickDirection
+            let oldDirection = self.rightStickDirection
             self.rightStickDirection = direction
             self.rightStickHandler?(direction, oldDirection)
         }
