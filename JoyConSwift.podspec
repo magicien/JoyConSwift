@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "JoyConSwift"
-  s.version = "0.1.2"
+  s.version = "0.2.0"
   s.summary = "IOKit wrapper for Nintendo Joy-Con and ProController (macOS, Swift)"
   s.homepage = "https://github.com/magicien/JoyConSwift"
   s.license = "MIT"
