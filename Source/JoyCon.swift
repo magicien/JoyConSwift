@@ -13,9 +13,12 @@ public enum JoyCon {
     
     /// Controller types
     public enum ControllerType: String {
+        case FamicomController1 = "Famicom Controller 1"
+        case FamicomController2 = "Famicom Controller 2"
         case JoyConL = "Joy-Con (L)"
         case JoyConR = "Joy-Con (R)"
         case ProController = "Pro Controller"
+        case SNESController = "SNES Controlller"
         case unknown = "unknown"
     }
     
@@ -94,6 +97,10 @@ public enum JoyCon {
         case RightSL
         case R
         case ZR
+        
+        // Famicom Controller
+        case Start
+        case Select
     }
     
     /// Stick directions
