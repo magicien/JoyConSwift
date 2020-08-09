@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
+   <Group
+      location = "group:/Users/ohno/Documents/Development/JoyConSwift/Source/controllers"
+      name = "controllers">
+      <FileRef
+         location = "group:ProController.swift">
+      </FileRef>
+      <FileRef
+         location = "group:SNESController.swift">
+      </FileRef>
+      <FileRef
+         location = "group:FamicomController1.swift">
+      </FileRef>
+      <FileRef
+         location = "group:JoyConL.swift">
+      </FileRef>
+      <FileRef
+         location = "group:JoyConR.swift">
+      </FileRef>
+      <FileRef
+         location = "group:FamicomController2.swift">
+      </FileRef>
+   </Group>
    <FileRef
-      location = "self:JoyConSwift.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

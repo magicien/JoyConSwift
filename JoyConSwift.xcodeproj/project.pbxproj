@@ -9,15 +9,18 @@
 /* Begin PBXBuildFile section */
 		DD8D413E22B616A500C729D9 /* JoyConSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DD8D413022B616A500C729D9 /* JoyConSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD8D414A22B616E800C729D9 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D414722B616E800C729D9 /* Controller.swift */; };
-		DD8D414B22B616E800C729D9 /* JoyConL.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D414822B616E800C729D9 /* JoyConL.swift */; };
 		DD8D414C22B616E800C729D9 /* JoyConManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D414922B616E800C729D9 /* JoyConManager.swift */; };
-		DD8D423A22B6A95E00C729D9 /* JoyConR.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D423922B6A95E00C729D9 /* JoyConR.swift */; };
-		DD8D52BE22BF5B9900C729D9 /* ProController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D52BD22BF5B9900C729D9 /* ProController.swift */; };
 		DD8D52C022BF796000C729D9 /* JoyCon.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D52BF22BF796000C729D9 /* JoyCon.swift */; };
 		DD8D52C222BF7B9600C729D9 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD8D52C122BF7B9600C729D9 /* Utils.swift */; };
 		DDA27BEC22C616C700AFB876 /* Subcommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA27BEB22C616C700AFB876 /* Subcommand.swift */; };
 		DDEADDA524A9CEBC00A61D12 /* Rumble.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEADDA424A9CEBC00A61D12 /* Rumble.swift */; };
 		DDEADDB224ABABDC00A61D12 /* HomeLEDPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEADDB124ABABDC00A61D12 /* HomeLEDPattern.swift */; };
+		DDF3BF8124E004EA00132D61 /* ProController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF3BF7A24E004BD00132D61 /* ProController.swift */; };
+		DDF3BF8224E004EC00132D61 /* SNESController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF3BF7B24E004BD00132D61 /* SNESController.swift */; };
+		DDF3BF8324E004EF00132D61 /* FamicomController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF3BF7C24E004BD00132D61 /* FamicomController1.swift */; };
+		DDF3BF8424E004FE00132D61 /* FamicomController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF3BF7F24E004BD00132D61 /* FamicomController2.swift */; };
+		DDF3BF8524E0050400132D61 /* JoyConL.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF3BF7D24E004BD00132D61 /* JoyConL.swift */; };
+		DDF3BF8624E0050700132D61 /* JoyConR.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF3BF7E24E004BD00132D61 /* JoyConR.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,15 +28,18 @@
 		DD8D413022B616A500C729D9 /* JoyConSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JoyConSwift.h; sourceTree = "<group>"; };
 		DD8D413122B616A500C729D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD8D414722B616E800C729D9 /* Controller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
-		DD8D414822B616E800C729D9 /* JoyConL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoyConL.swift; sourceTree = "<group>"; };
 		DD8D414922B616E800C729D9 /* JoyConManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoyConManager.swift; sourceTree = "<group>"; };
-		DD8D423922B6A95E00C729D9 /* JoyConR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoyConR.swift; sourceTree = "<group>"; };
-		DD8D52BD22BF5B9900C729D9 /* ProController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProController.swift; sourceTree = "<group>"; };
 		DD8D52BF22BF796000C729D9 /* JoyCon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoyCon.swift; sourceTree = "<group>"; };
 		DD8D52C122BF7B9600C729D9 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DDA27BEB22C616C700AFB876 /* Subcommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subcommand.swift; sourceTree = "<group>"; };
 		DDEADDA424A9CEBC00A61D12 /* Rumble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rumble.swift; sourceTree = "<group>"; };
 		DDEADDB124ABABDC00A61D12 /* HomeLEDPattern.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeLEDPattern.swift; sourceTree = "<group>"; };
+		DDF3BF7A24E004BD00132D61 /* ProController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProController.swift; sourceTree = "<group>"; };
+		DDF3BF7B24E004BD00132D61 /* SNESController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNESController.swift; sourceTree = "<group>"; };
+		DDF3BF7C24E004BD00132D61 /* FamicomController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamicomController1.swift; sourceTree = "<group>"; };
+		DDF3BF7D24E004BD00132D61 /* JoyConL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoyConL.swift; sourceTree = "<group>"; };
+		DDF3BF7E24E004BD00132D61 /* JoyConR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoyConR.swift; sourceTree = "<group>"; };
+		DDF3BF7F24E004BD00132D61 /* FamicomController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamicomController2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,14 +79,26 @@
 				DDEADDB124ABABDC00A61D12 /* HomeLEDPattern.swift */,
 				DDEADDA424A9CEBC00A61D12 /* Rumble.swift */,
 				DDA27BEB22C616C700AFB876 /* Subcommand.swift */,
-				DD8D414822B616E800C729D9 /* JoyConL.swift */,
-				DD8D423922B6A95E00C729D9 /* JoyConR.swift */,
-				DD8D52BD22BF5B9900C729D9 /* ProController.swift */,
 				DD8D52C122BF7B9600C729D9 /* Utils.swift */,
+				DDF3BF8024E004BD00132D61 /* controllers */,
 				DD8D413122B616A500C729D9 /* Info.plist */,
 			);
 			path = Source;
 			sourceTree = "<group>";
+		};
+		DDF3BF8024E004BD00132D61 /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DDF3BF7C24E004BD00132D61 /* FamicomController1.swift */,
+				DDF3BF7F24E004BD00132D61 /* FamicomController2.swift */,
+				DDF3BF7D24E004BD00132D61 /* JoyConL.swift */,
+				DDF3BF7E24E004BD00132D61 /* JoyConR.swift */,
+				DDF3BF7A24E004BD00132D61 /* ProController.swift */,
+				DDF3BF7B24E004BD00132D61 /* SNESController.swift */,
+			);
+			name = controllers;
+			path = /Users/ohno/Documents/Development/JoyConSwift/Source/controllers;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -168,10 +186,13 @@
 				DDEADDB224ABABDC00A61D12 /* HomeLEDPattern.swift in Sources */,
 				DD8D414A22B616E800C729D9 /* Controller.swift in Sources */,
 				DDA27BEC22C616C700AFB876 /* Subcommand.swift in Sources */,
-				DD8D414B22B616E800C729D9 /* JoyConL.swift in Sources */,
-				DD8D423A22B6A95E00C729D9 /* JoyConR.swift in Sources */,
-				DD8D52BE22BF5B9900C729D9 /* ProController.swift in Sources */,
 				DD8D52C222BF7B9600C729D9 /* Utils.swift in Sources */,
+				DDF3BF8324E004EF00132D61 /* FamicomController1.swift in Sources */,
+				DDF3BF8424E004FE00132D61 /* FamicomController2.swift in Sources */,
+				DDF3BF8524E0050400132D61 /* JoyConL.swift in Sources */,
+				DDF3BF8624E0050700132D61 /* JoyConR.swift in Sources */,
+				DDF3BF8124E004EA00132D61 /* ProController.swift in Sources */,
+				DDF3BF8224E004EC00132D61 /* SNESController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

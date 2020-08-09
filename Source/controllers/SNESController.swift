@@ -68,7 +68,7 @@ public class SNESController: Controller {
         let b = button1 & 0x04 == 0x04
         let a = button1 & 0x08 == 0x08
         let r = button1 & 0x40 == 0x40
-        let zr = button1 & 0x80 == 0x40
+        let zr = button1 & 0x80 == 0x80
         let select = button2 & 0x01 == 0x01
         let start = button2 & 0x02 == 0x02
         let down = button3 & 0x01 == 0x01
