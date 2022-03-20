@@ -9,6 +9,6 @@ let package = Package(
         .library(name: "JoyConSwift", targets: ["JoyConSwift"]),
     ],
     targets: [
-        .target(name: "JoyConSwift", path: "Sources")
+        .target(name: "JoyConSwift", path: "Source")
     ]
 )
