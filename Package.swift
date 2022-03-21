@@ -7,6 +7,7 @@ let name = "JoyConSwift"
 
 let package = Package(
     name: name,
+    platforms: [.macOS("11.1")],
     products: [.library(name: name, targets: [name])],
 	targets: [.target(name: name, path: "Source")],
 	swiftLanguageVersions: [.v5]
