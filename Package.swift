@@ -1,14 +1,13 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.1
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
+let name = "JoyConSwift"
+
 let package = Package(
-    name: "JoyConSwift",
-    platforms: [.macOS(.v11)],
-    products: [
-        .library(name: "JoyConSwift", targets: ["JoyConSwift"]),
-    ],
-    targets: [
-        .target(name: "JoyConManager", path: "Source")
-    ]
+    name: name,
+    products: [.library(name: name, targets: [name])],
+	targets: [.target(name: name, path: "Source")],
+	swiftLanguageVersions: [.v5]
 )
